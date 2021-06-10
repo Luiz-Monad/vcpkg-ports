@@ -8,9 +8,11 @@
     "zlib"
   ],
   "default-features": [
-    "dnn",
+    "eigen",
+    "ipp",
     "jpeg",
     "png",
+    "openmp",
     "quirc",
     "tiff",
     "webp"
@@ -23,30 +25,13 @@
       ]
     },
     "contrib": {
-      "description": "opencv_contrib module",
-      "dependencies": [
-        {
-          "name": "hdf5",
-          "platform": "!uwp & !(windows & (arm | arm64))"
-        },
-        {
-          "name": "tesseract",
-          "platform": "!uwp & !(windows & (arm | arm64))"
-        }
-      ]
+      "description": "opencv_contrib module"
     },
     "cuda": {
       "description": "CUDA support for opencv",
       "dependencies": [
         "cuda",
-        "cudnn",
-        {
-          "name": "opencv4",
-          "default-features": false,
-          "features": [
-            "contrib"
-          ]
-        }
+        "cudnn"
       ]
     },
     "dnn": {
@@ -107,8 +92,7 @@
     "lapack": {
       "description": "LAPACK support for opencv",
       "dependencies": [
-        "blas",
-        "lapack"
+        "blas"
       ]
     },
     "nonfree": {
@@ -198,16 +182,7 @@
       ]
     },
     "vtk": {
-      "description": "vtk support for opencv",
-      "dependencies": [
-        {
-          "name": "opencv4",
-          "features": [
-            "contrib"
-          ]
-        },
-        "vtk"
-      ]
+      "description": "vtk support for opencv"
     },
     "webp": {
       "description": "WebP support for opencv",
@@ -217,6 +192,18 @@
     },
     "world": {
       "description": "Compile to a single package support for opencv"
+    },
+    "xfeatures2d": {
+      "description": "opencv_xfeatures2d module",
+      "dependencies": [
+        {
+          "name": "opencv4",
+          "default-features": false,
+          "features": [
+            "contrib"
+          ]
+        }
+      ]
     }
   }
 }
