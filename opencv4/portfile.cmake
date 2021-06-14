@@ -10,18 +10,10 @@ set(OPENCV_VERSION "4.5.2")
 
 vcpkg_from_github(
     OUT_SOURCE_PATH SOURCE_PATH
-    REPO opencv/opencv
+    REPO luiz-monad/opencv
     REF ${OPENCV_VERSION}
     SHA512 d74ae3bc340639cbc8b5db41a1fec710acabf8ec828dd28ce3bacf7029d1afd23aeaf47a2273a42995de285daa8aef33a7f90d5c57ef096e2cb872e0845e92b0
     HEAD_REF master
-    PATCHES
-      0001-disable-downloading.patch
-      0002-install-options.patch
-      0003-force-package-requirements.patch
-      0004-fix-policy-CMP0057.patch
-      0005-fix-eigen.patch
-      0006-fix-uwp.patch
-      0008-devendor-quirc.patch
 )
 
 if(VCPKG_TARGET_ARCHITECTURE STREQUAL "arm64")
