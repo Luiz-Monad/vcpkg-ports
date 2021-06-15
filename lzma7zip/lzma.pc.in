@@ -1,0 +1,11 @@
+prefix=@LIB_PREFIX@
+exec_prefix=${prefix}
+libdir=${prefix}/lib
+includedir=${prefix}/include
+
+Name: lzma7zip
+Description: Library for archiving file with a high compression ratio.
+Version: 19.00
+Requires: 
+Libs: -L${libdir} -l@LIBNAME@
+Cflags: -I${includedir}
