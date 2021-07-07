@@ -1,0 +1,10 @@
+{
+  "name": "irrlicht-local",
+  "version": "1.9.0",
+  "port-version": 1,
+  "description": "Irrlicht Game Engine",
+  "homepage": "https://sourceforge.net/p/irrlicht",
+  "dependencies": [],
+  "default-features": [],
+  "features": {}
+}
