@@ -40,10 +40,20 @@ if(VCPKG_TARGET_IS_LINUX)
   set(WITH_OPENGL ON)
 endif()
 
+if(IOS)
+  # test_big_endian needs try_compile, which doesn't work for iOS
+  # http://public.kitware.com/Bug/view.php?id=12288
+  set(WORDS_BIGENDIAN 0)
+else()
+  include(TestBigEndian)
+  test_big_endian(WORDS_BIGENDIAN)
+endif()
+
 vcpkg_configure_cmake(
     SOURCE_PATH ${SOURCE_PATH}
     PREFER_NINJA # Disable this option if project cannot be built with Ninja
-    OPTIONS 
+    OPTIONS
+        -DWORDS_BIGENDIAN=${WORDS_BIGENDIAN}
         -DIRR_SHARED_LIB=${IRR_SHARED_LIB}
         -DIRR_UNICODE_PATH=${IRR_UNICODE_PATH}
         -DIRR_FAST_MATH=${IRR_FAST_MATH}
