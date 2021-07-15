@@ -92,7 +92,8 @@
     "lapack": {
       "description": "LAPACK support for opencv",
       "dependencies": [
-        "blas"
+        "blas",
+        "lapack"
       ]
     },
     "nonfree": {
@@ -182,7 +183,10 @@
       ]
     },
     "vtk": {
-      "description": "vtk support for opencv"
+      "description": "vtk support for opencv",
+      "dependencies": [
+        "vtk"
+      ]
     },
     "webp": {
       "description": "WebP support for opencv",
