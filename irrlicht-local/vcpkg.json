@@ -4,7 +4,15 @@
   "port-version": 1,
   "description": "Irrlicht Game Engine",
   "homepage": "https://sourceforge.net/p/irrlicht",
-  "dependencies": [],
+  "dependencies": [
+    "zlib",
+    "libjpeg-turbo",
+    "lzma7zip",
+    "libpng",
+    "bzip2",
+    "tiny-aes-c",
+    "egl-registry"
+  ],
   "default-features": [],
   "features": {}
 }

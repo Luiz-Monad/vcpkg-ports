@@ -4,7 +4,7 @@ file(
     DESTINATION ${CURRENT_PACKAGES_DIR}/share/)
 
 file(
-    COPY ${CMAKE_CURRENT_LIST_DIR}/opencv4.h
+    COPY ${CMAKE_CURRENT_LIST_DIR}/local_opencv_4_5_1.h
     DESTINATION ${CURRENT_PACKAGES_DIR}/include
 )
 

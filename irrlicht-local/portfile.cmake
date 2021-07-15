@@ -4,7 +4,7 @@ file(
     DESTINATION ${CURRENT_PACKAGES_DIR}/share/)
 
 file(
-    COPY ${CMAKE_CURRENT_LIST_DIR}/irrlicht19.h
+    COPY ${CMAKE_CURRENT_LIST_DIR}/local_irrlicht_1_9.h
     DESTINATION ${CURRENT_PACKAGES_DIR}/include
 )
 
