@@ -1,0 +1,17 @@
+{
+  "name": "lzma7zip",
+  "version-string": "19.00",
+  "port-version": 2,
+  "description": "Library for archiving file with a high compression ratio.",
+  "homepage": "https://www.7-zip.org",
+  "dependencies": [
+    {
+      "name": "vcpkg-cmake",
+      "host": true
+    },
+    {
+      "name": "vcpkg-cmake-config",
+      "host": true
+    }
+  ]
+}
