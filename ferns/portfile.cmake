@@ -11,12 +11,11 @@ vcpkg_from_github(
 
 file(COPY ${CMAKE_CURRENT_LIST_DIR}/CMakeLists.txt DESTINATION ${SOURCE_PATH})
 
-vcpkg_configure_cmake(
+vcpkg_cmake_configure(
     SOURCE_PATH ${SOURCE_PATH}
-    PREFER_NINJA
 )
 
-vcpkg_install_cmake()
+vcpkg_cmake_install()
 
 vcpkg_copy_pdbs()
 
@@ -26,10 +25,9 @@ file(
     RENAME copyright
 )
 
-
 # # Moves all .cmake files from /debug/share/ferns/ to /share/ferns/
-# # See /docs/maintainers/vcpkg_fixup_cmake_targets.md for more details
-# vcpkg_fixup_cmake_targets(CONFIG_PATH cmake TARGET_PATH share/ferns)
+# # See /docs/maintainers/vcpkg_cmake_config_fixup.md for more details
+# vcpkg_cmake_config_fixup(CONFIG_PATH cmake TARGET_PATH share/ferns)
 
 # # Handle copyright
 file(INSTALL 

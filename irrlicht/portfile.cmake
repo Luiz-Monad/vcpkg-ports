@@ -49,9 +49,8 @@ else()
   test_big_endian(WORDS_BIGENDIAN)
 endif()
 
-vcpkg_configure_cmake(
+vcpkg_cmake_configure(
     SOURCE_PATH ${SOURCE_PATH}
-    PREFER_NINJA # Disable this option if project cannot be built with Ninja
     OPTIONS
         -DWORDS_BIGENDIAN=${WORDS_BIGENDIAN}
         -DIRR_SHARED_LIB=${IRR_SHARED_LIB}
@@ -66,9 +65,9 @@ vcpkg_configure_cmake(
         -DWITH_ANGLE=${WITH_ANGLE}
 )
 
-vcpkg_install_cmake()
+vcpkg_cmake_install()
 
-vcpkg_fixup_cmake_targets()
+vcpkg_cmake_config_fixup()
 
 if("tools" IN_LIST FEATURES)
     vcpkg_copy_tool_dependencies(${CURRENT_PACKAGES_DIR}/tools/irrlicht/)

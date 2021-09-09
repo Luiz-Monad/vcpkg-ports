@@ -5,6 +5,14 @@
     "description": "Irrlicht Game Engine",
     "homepage": "https://sourceforge.net/p/irrlicht",
     "dependencies": [
+        {
+            "name": "vcpkg-cmake",
+            "host": true
+        },
+        {
+            "name": "vcpkg-cmake-config",
+            "host": true
+        },
         "zlib",
         "libjpeg-turbo",
         "lzma7zip",
