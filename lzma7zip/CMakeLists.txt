@@ -63,6 +63,8 @@ set(PUBLIC_HEADERS
     C/LzmaLib.h
 )
 
+include(GNUInstallDirs)
+
 install(
     TARGETS LZMA
     EXPORT LZMA
@@ -80,12 +82,12 @@ install(
 install(
     EXPORT LZMA
     DESTINATION share/LZMA
-    FILE LZMAConfig.cmake
+    FILE LZMATargets.cmake
     NAMESPACE LZMA::
-    CONFIGURATIONS Release
 )
 
 include(CMakePackageConfigHelpers)
+
 write_basic_package_version_file(
     ${CMAKE_CURRENT_BINARY_DIR}/LZMAConfigVersion.cmake
     COMPATIBILITY AnyNewerVersion
@@ -93,5 +95,15 @@ write_basic_package_version_file(
 install(
     FILES ${CMAKE_CURRENT_BINARY_DIR}/LZMAConfigVersion.cmake
     DESTINATION share/LZMA
-    CONFIGURATIONS Release
+)
+
+configure_package_config_file(
+    ${CMAKE_CURRENT_SOURCE_DIR}/LZMAConfig.cmake.in
+    ${CMAKE_CURRENT_BINARY_DIR}/LZMAConfig.cmake
+    INSTALL_DESTINATION share/LZMA
+)
+
+install(
+    FILES ${CMAKE_CURRENT_BINARY_DIR}/LZMAConfig.cmake
+    DESTINATION share/LZMA
 )

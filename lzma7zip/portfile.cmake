@@ -14,14 +14,18 @@ vcpkg_extract_source_archive_ex(
 )
 
 file(COPY ${CMAKE_CURRENT_LIST_DIR}/CMakeLists.txt DESTINATION ${SOURCE_PATH})
+file(COPY ${CMAKE_CURRENT_LIST_DIR}/LZMAConfig.cmake.in DESTINATION ${SOURCE_PATH})
 
 vcpkg_cmake_configure(
     SOURCE_PATH ${SOURCE_PATH}
+    OPTIONS_DEBUG
+      -DCMAKE_DEBUG_POSTFIX=d
 )
 
 vcpkg_cmake_install()
-
 vcpkg_copy_pdbs()
+
+vcpkg_cmake_config_fixup(CONFIG_PATH share/lzma)
 
 file(
     INSTALL ${CMAKE_CURRENT_LIST_DIR}/License.txt
