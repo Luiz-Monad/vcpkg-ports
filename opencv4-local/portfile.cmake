@@ -1,7 +1,8 @@
 
 file(
     COPY ${CMAKE_CURRENT_LIST_DIR}/FindLocalOpenCV.cmake 
-    DESTINATION ${CURRENT_PACKAGES_DIR}/share/)
+    DESTINATION ${CURRENT_PACKAGES_DIR}/share
+)
 
 file(
     COPY ${CMAKE_CURRENT_LIST_DIR}/local_opencv_4_5_1.h

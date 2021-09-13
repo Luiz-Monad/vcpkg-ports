@@ -1,7 +1,8 @@
 
 file(
     COPY ${CMAKE_CURRENT_LIST_DIR}/FindLocalIrrlicht.cmake 
-    DESTINATION ${CURRENT_PACKAGES_DIR}/share/)
+    DESTINATION ${CURRENT_PACKAGES_DIR}/share
+)
 
 file(
     COPY ${CMAKE_CURRENT_LIST_DIR}/local_irrlicht_1_9.h
