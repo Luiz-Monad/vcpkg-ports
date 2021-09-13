@@ -28,6 +28,7 @@ vcpkg_from_github(
 )
 
 file(COPY ${CMAKE_CURRENT_LIST_DIR}/CMakeLists.txt DESTINATION ${SOURCE_PATH})
+file(COPY ${CMAKE_CURRENT_LIST_DIR}/angle-config.cmake.in DESTINATION ${SOURCE_PATH})
 file(COPY ${CMAKE_CURRENT_LIST_DIR}/angle_commit.h DESTINATION ${SOURCE_PATH})
 file(COPY ${CMAKE_CURRENT_LIST_DIR}/angle_commit.h DESTINATION ${SOURCE_PATH}/src/common)
 
@@ -53,7 +54,7 @@ checkout_in_path_with_patches(
     "third-party-zlib-far-undef.patch"
 )
 
-vcpkg_configure_cmake(
+vcpkg_cmake_configure(
     SOURCE_PATH ${SOURCE_PATH}
     PREFER_NINJA
     OPTIONS_DEBUG -DDISABLE_INSTALL_HEADERS=1
@@ -61,9 +62,9 @@ vcpkg_configure_cmake(
         -D${ANGLE_CPU_BITNESS}=1
 )
 
-vcpkg_install_cmake()
+vcpkg_cmake_install()
 
-vcpkg_fixup_cmake_targets(CONFIG_PATH share/unofficial-angle TARGET_PATH share/unofficial-angle)
+vcpkg_cmake_config_fixup(CONFIG_PATH share/angle)
 
 vcpkg_copy_pdbs()
 

@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 3.8)
-project(angle CXX C)
+set(ANGLE_VER "1.0.4472")
+project(angle VERSION ${ANGLE_VER} LANGUAGES CXX C)
 
 if(WIN32 AND NOT WINDOWS_STORE)
     set(WINDOWS_DESKTOP 1)
@@ -716,7 +717,7 @@ else()
     )
 endif()
 
-install(EXPORT ANGLEExport FILE unofficial-angle-config.cmake NAMESPACE unofficial::angle:: DESTINATION share/unofficial-angle)
+install(EXPORT ANGLEExport FILE angle-targets.cmake NAMESPACE angle:: DESTINATION share/angle)
 
 if(NOT DISABLE_INSTALL_HEADERS)
     install(
@@ -735,3 +736,14 @@ if(NOT DISABLE_INSTALL_HEADERS)
         PATTERN "export.h" EXCLUDE
     )
 endif()
+
+include(CMakePackageConfigHelpers)
+configure_package_config_file(
+    ${CMAKE_CURRENT_SOURCE_DIR}/angle-config.cmake.in
+    ${CMAKE_CURRENT_BINARY_DIR}/angle-config.cmake
+    INSTALL_DESTINATION share/angle
+)
+install(
+    FILES ${CMAKE_CURRENT_BINARY_DIR}/angle-config.cmake
+    DESTINATION share/angle
+)
