@@ -4,10 +4,10 @@ project(egl-registry)
 
 include(GNUInstallDirs)
 
-add_library(libGLESv2 INTERFACE)
+add_library(EGLHeaders INTERFACE)
 
 install(
-    TARGETS libGLESv2
+    TARGETS EGLHeaders
     EXPORT EGLRegistryExport
     INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
 )
