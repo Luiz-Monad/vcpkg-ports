@@ -2,7 +2,7 @@ set(_TGT Irrlicht)
 set(__LTGT irrlicht)
 set(_PRJ_DIR irrlicht-ogl-es)
 
-set(_MERGED ${CMAKE_CURRENT_BINARY_DIR}/local)
+set(_MERGED ${CMAKE_CURRENT_BINARY_DIR}/local_${__LTGT})
 
 # Merge targets
 foreach(VCPKG_TARGET_TRIPLET_CONF debug release)

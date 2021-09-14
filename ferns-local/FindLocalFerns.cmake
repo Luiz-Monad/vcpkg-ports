@@ -2,7 +2,7 @@ set(_TGT Ferns)
 string(TOLOWER ${_TGT} __LTGT)
 set(_PRJ_DIR ${__LTGT})
 
-set(_MERGED ${CMAKE_CURRENT_BINARY_DIR}/local)
+set(_MERGED ${CMAKE_CURRENT_BINARY_DIR}/local_${__LTGT})
 
 # Merge targets
 foreach(VCPKG_TARGET_TRIPLET_CONF debug release)

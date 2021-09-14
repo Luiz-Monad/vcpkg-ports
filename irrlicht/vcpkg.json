@@ -19,7 +19,12 @@
         "libpng",
         "bzip2",
         "tiny-aes-c",
-        "egl-registry"
+        "egl-registry",
+        "opengl-registry",
+        {
+            "name": "angle",
+            "platform": "!android"
+        }
     ],
     "default-features": [
         "fast-fpu"
@@ -59,7 +64,10 @@
             "description": "graphics backend: webgl"
         },
         "angle": {
-            "description": "dependency (for gles): angle"
+            "description": "dependency (for gles): angle",
+            "dependencies": [
+                "angle"
+            ]
         }
     }
 }
