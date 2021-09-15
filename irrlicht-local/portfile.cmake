@@ -1,7 +1,10 @@
 
-file(
-    COPY ${CMAKE_CURRENT_LIST_DIR}/FindLocalIrrlicht.cmake 
-    DESTINATION ${CURRENT_PACKAGES_DIR}/share
+set(_TGT Irrlicht)
+set(_LTGT irrlicht)
+set(_PRJ_DIR irrlicht-ogl-es)
+configure_file(
+    ${CMAKE_CURRENT_LIST_DIR}/FindLocalLibrary.cmake.in
+    ${CURRENT_PACKAGES_DIR}/share/FindLocalIrrlicht.cmake @ONLY
 )
 
 file(

@@ -1,7 +1,10 @@
 
-file(
-    COPY ${CMAKE_CURRENT_LIST_DIR}/FindLocalFerns.cmake 
-    DESTINATION ${CURRENT_PACKAGES_DIR}/share
+set(_TGT Ferns)
+set(_LTGT ferns)
+set(_PRJ_DIR ferns)
+configure_file(
+    ${CMAKE_CURRENT_LIST_DIR}/FindLocalLibrary.cmake.in
+    ${CURRENT_PACKAGES_DIR}/share/FindLocalFerns.cmake @ONLY
 )
 
 file(

@@ -1,7 +1,10 @@
 
-file(
-    COPY ${CMAKE_CURRENT_LIST_DIR}/FindLocalOpenCV.cmake 
-    DESTINATION ${CURRENT_PACKAGES_DIR}/share
+set(_TGT OpenCV)
+set(_LTGT opencv)
+set(_PRJ_DIR opencv)
+configure_file(
+    ${CMAKE_CURRENT_LIST_DIR}/FindLocalLibrary.cmake.in
+    ${CURRENT_PACKAGES_DIR}/share/FindLocalOpenCV.cmake @ONLY
 )
 
 file(
