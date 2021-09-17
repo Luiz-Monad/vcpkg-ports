@@ -12,6 +12,8 @@
       "name": "vcpkg-cmake-config",
       "host": true
     },
+    "pmake-cmake-targets",
+    "pmake-cmake-dashboard",
     "opencv4",
     "zlib"
   ],

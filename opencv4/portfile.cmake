@@ -6,106 +6,15 @@ if (EXISTS "${CURRENT_INSTALLED_DIR}/share/opencv3")
   message(FATAL_ERROR "OpenCV 3 is installed, please uninstall and try again:\n    vcpkg remove opencv3")
 endif()
 
-set(OPENCV_VERSION "4.5.2")
-
 vcpkg_from_github(
     OUT_SOURCE_PATH SOURCE_PATH
     REPO luiz-monad/opencv
-    REF ${OPENCV_VERSION}
-    SHA512 07788ec49801bdab963a057871e81fc2b081149c75764810197766d987e54db0d6fd142d2397bbbacefcea6a8be100235ea886ee7e5d5c07ed1156e76249dfec
-    HEAD_REF master
+    REF customport
+    SHA512 @SHA512@
 )
 
-if(VCPKG_TARGET_ARCHITECTURE STREQUAL "arm64")
-  set(TARGET_IS_AARCH64 1)
-elseif(VCPKG_TARGET_ARCHITECTURE STREQUAL "arm")
-  set(TARGET_IS_ARM 1)
-elseif(VCPKG_TARGET_ARCHITECTURE STREQUAL "x64")
-  set(TARGET_IS_X86_64 1)
-else()
-  set(TARGET_IS_X86 1)
-endif()
-
-file(REMOVE "${SOURCE_PATH}/cmake/FindCUDNN.cmake")
-
-string(COMPARE EQUAL "${VCPKG_CRT_LINKAGE}" "static" BUILD_WITH_STATIC_CRT)
-
-set(ADE_DIR ${CURRENT_INSTALLED_DIR}/share/ade CACHE PATH "Path to existing ADE CMake Config file")
-
-vcpkg_check_features(OUT_FEATURE_OPTIONS FEATURE_OPTIONS
- "ade"      WITH_ADE
- "contrib"  WITH_CONTRIB
- "cuda"     WITH_CUBLAS
- "cuda"     WITH_CUDA
- "eigen"    WITH_EIGEN
- "ffmpeg"   WITH_FFMPEG
- "gdcm"     WITH_GDCM
- "halide"   WITH_HALIDE
- "jasper"   WITH_JASPER
- "jpeg"     WITH_JPEG
- "lapack"   WITH_LAPACK
- "nonfree"  OPENCV_ENABLE_NONFREE
- "openexr"  WITH_OPENEXR
- "opengl"   WITH_OPENGL
- "png"      WITH_PNG
- "qt"       WITH_QT
- "quirc"    WITH_QUIRC
- "tiff"     WITH_TIFF
- "vtk"      WITH_VTK
- "webp"     WITH_WEBP
- "world"    BUILD_opencv_world
-)
-
-# Cannot use vcpkg_check_features() for "dnn", "ipp", "openmp", "ovis", "tbb"
-# As the respective value of their variables can be unset conditionally.
-set(BUILD_opencv_dnn OFF)
-if("dnn" IN_LIST FEATURES)
-  if(NOT VCPKG_TARGET_IS_ANDROID)
-    set(BUILD_opencv_dnn ON)
-  else()
-    message(WARNING "The dnn module cannot be enabled on Android")
-  endif()
-endif()
-
-set(BUILD_opencv_gapi ON)
-if(VCPKG_TARGET_IS_UWP)
-  set(BUILD_opencv_gapi OFF)
-  message(WARNING "The gapi module cannot be enabled on UWP platform")
-endif()
-
-set(WITH_IPP OFF)
-if("ipp" IN_LIST FEATURES)
-  set(WITH_IPP ON)
-endif()
-
-set(WITH_OPENMP OFF)
-if("openmp" IN_LIST FEATURES)
-  if(NOT VCPKG_TARGET_IS_OSX)
-    set(WITH_OPENMP ON)
-  else()
-    message(WARNING "The OpenMP feature is not supported on macOS")
-  endif()
-endif()
-
-set(BUILD_opencv_ovis OFF)
-if("ovis" IN_LIST FEATURES)
-  set(BUILD_opencv_ovis ON)
-endif()
-
-set(BUILD_opencv_sfm OFF)
-if("sfm" IN_LIST FEATURES)
-  set(BUILD_opencv_sfm ON)
-endif()
-
-set(BUILD_opencv_xfeatures2d OFF)
-if("xfeatures2d" IN_LIST FEATURES)
-  set(BUILD_opencv_xfeatures2d ON)
-endif()
-
-set(WITH_TBB OFF)
-if("tbb" IN_LIST FEATURES)
-  set(WITH_TBB ON)
-endif()
+#vcpkg_check_features was moved to vcpkg.cmake in the sources to support local port.
+include(${SOURCE_PATH}/vcpkg.cmake)
 
 if("dnn" IN_LIST FEATURES)
   vcpkg_download_distfile(TINYDNN_ARCHIVE
@@ -117,34 +26,21 @@ endif()
 
 if("cuda" IN_LIST FEATURES)
   vcpkg_download_distfile(OCV_DOWNLOAD
-      URLS "https://github.com/NVIDIA/NVIDIAOpticalFlowSDK/archive/79c6cee80a2df9a196f20afd6b598a9810964c32.zip"
-      FILENAME "opencv-cache/nvidia_optical_flow/ca5acedee6cb45d0ec610a6732de5c15-79c6cee80a2df9a196f20afd6b598a9810964c32.zip"
-      SHA512 d80cdedec588dafaad4ebb8615349f842ecdc64d3ca9480fee7086d606e6f2362606a9a2ce273c5cf507be2840ec24bbcbe32c2962672c3bcfb72d31428ef73d
+    URLS "https://github.com/NVIDIA/NVIDIAOpticalFlowSDK/archive/edb50da3cf849840d680249aa6dbef248ebce2ca.zip"
+    FILENAME "opencv-cache/nvidia_optical_flow/a73cd48b18dcc0cc8933b30796074191-edb50da3cf849840d680249aa6dbef248ebce2ca.zip"
+    SHA512 12d655ac9fcfc6df0186daa62f7185dadd489f0eeea25567d78c2b47a9840dcce2bd03a3e9b3b42f125dbaf3150f52590ea7597dc1dc8acee852dc0aed56651e
   )
 endif()
 
 # Build image quality module when building with 'contrib' feature and not UWP.
-set(BUILD_opencv_quality OFF)
 if("contrib" IN_LIST FEATURES)
-  if (VCPKG_TARGET_IS_UWP)
-    set(BUILD_opencv_quality OFF)
-    message(WARNING "The image quality module (quality) does not build for UWP, the module has been disabled.")
-    # The hdf module is silently disabled by OpenCVs buildsystem if HDF5 is not detected.
-    message(WARNING "The hierarchical data format module (hdf) depends on HDF5 which doesn't support UWP, the module has been disabled.")
-  else()
-    set(BUILD_opencv_quality CMAKE_DEPENDS_IN_PROJECT_ONLY)
-  endif()
 
   vcpkg_from_github(
     OUT_SOURCE_PATH CONTRIB_SOURCE_PATH
-    REPO opencv/opencv_contrib
-    REF ${OPENCV_VERSION}
-    SHA512 1ebb9fec53b74039ffa2dc9f00899ab83af615f01156c0454ea7c53161256b6c9fd4548387fbfd197182c2d03db4de8c7170e2877b4648ce92531f821e81fdd7
-    HEAD_REF master
-    PATCHES
-      0007-fix-hdf5.patch
+    REPO luiz-monad/opencv_contrib
+    REF customport
+    SHA512 @SHA512@
   )
-  set(BUILD_WITH_CONTRIB_FLAG "-DOPENCV_EXTRA_MODULES_PATH=${CONTRIB_SOURCE_PATH}/modules")
 
   if("boostdesc" IN_LIST FEATURES)
     vcpkg_download_distfile(OCV_DOWNLOAD
@@ -285,138 +181,22 @@ if(WITH_IPP)
   endif()
 endif()
 
-set(WITH_MSMF ON)
-if(NOT VCPKG_TARGET_IS_WINDOWS OR VCPKG_TARGET_IS_UWP)
-  set(WITH_MSMF OFF)
-endif()
-
-if (VCPKG_LIBRARY_LINKAGE STREQUAL static)
-  if (WITH_TBB)
-    message(WARNING "TBB is currently unsupported in this build configuration, turning it off")
-    set(WITH_TBB OFF)
-  endif()
-
-  if (VCPKG_TARGET_IS_WINDOWS AND BUILD_opencv_ovis)
-    message(WARNING "OVIS is currently unsupported in this build configuration, turning it off")
-    set(BUILD_opencv_ovis OFF)
-  endif()
-endif()
-
-if("ffmpeg" IN_LIST FEATURES)
-  if(VCPKG_TARGET_IS_UWP)
-    set(VCPKG_C_FLAGS "/sdl- ${VCPKG_C_FLAGS}")
-    set(VCPKG_CXX_FLAGS "/sdl- ${VCPKG_CXX_FLAGS}")
-  endif()
-endif()
-
-if("qt" IN_LIST FEATURES)
-  list(APPEND ADDITIONAL_BUILD_FLAGS "-DCMAKE_AUTOMOC=ON")
-endif()
-
 vcpkg_cmake_configure(
-    SOURCE_PATH ${SOURCE_PATH}
+    SOURCE_PATH "${SOURCE_PATH}"
     OPTIONS
-        ###### opencv cpu recognition is broken, always using host and not target: here we bypass that
-        -DOPENCV_SKIP_SYSTEM_PROCESSOR_DETECTION=TRUE
-        -DAARCH64=${TARGET_IS_AARCH64}
-        -DX86_64=${TARGET_IS_X86_64}
-        -DX86=${TARGET_IS_X86}
-        -DARM=${TARGET_IS_ARM}
-        ###### ocv_options
-        -DOpenCV_INSTALL_BINARIES_PREFIX=
-        -DOPENCV_BIN_INSTALL_PATH=bin
-        -DOPENCV_INCLUDE_INSTALL_PATH=include
-        -DOPENCV_LIB_INSTALL_PATH=lib
-        -DOPENCV_3P_LIB_INSTALL_PATH=lib
-        -DOPENCV_CONFIG_INSTALL_PATH=share/opencv
-        -DINSTALL_TO_MANGLED_PATHS=OFF
-        -DOPENCV_FFMPEG_USE_FIND_PACKAGE=FFMPEG
-        -DOPENCV_FFMPEG_SKIP_BUILD_CHECK=TRUE
-        -DCMAKE_DEBUG_POSTFIX=d
-        -DOPENCV_DLLVERSION=
-        -DOPENCV_DEBUG_POSTFIX=d
-        -DOPENCV_GENERATE_SETUPVARS=OFF
-        # Do not build docs/examples
-        -DBUILD_DOCS=OFF
-        -DBUILD_EXAMPLES=OFF
-        -Dade_DIR=${ADE_DIR}
-        ###### Disable build 3rd party libs
-        -DBUILD_JASPER=OFF
-        -DBUILD_JPEG=OFF
-        -DBUILD_OPENEXR=OFF
-        -DBUILD_PNG=OFF
-        -DBUILD_TIFF=OFF
-        -DBUILD_WEBP=OFF
-        -DBUILD_ZLIB=OFF
-        -DBUILD_TBB=OFF
-        -DBUILD_IPP_IW=OFF
-        -DBUILD_ITT=OFF
-        ###### Disable build 3rd party components
-        -DBUILD_PROTOBUF=OFF
-        ###### OpenCV Build components
-        -DBUILD_opencv_apps=OFF
-        -DBUILD_opencv_java=OFF
-        -DBUILD_opencv_js=OFF
-        -DBUILD_ANDROID_PROJECT=OFF
-        -DBUILD_ANDROID_EXAMPLES=OFF
-        -DBUILD_PACKAGE=OFF
-        -DBUILD_PERF_TESTS=OFF
-        -DBUILD_TESTS=OFF
-        -DBUILD_WITH_DEBUG_INFO=ON
-        -DBUILD_WITH_STATIC_CRT=${BUILD_WITH_STATIC_CRT}
-        -DBUILD_JAVA=OFF
+        -DDOWNLOADS=${DOWNLOADS}
         -DCURRENT_INSTALLED_DIR=${CURRENT_INSTALLED_DIR}
-        ###### PROTOBUF
-        -DPROTOBUF_UPDATE_FILES=${BUILD_opencv_dnn}
-        -DUPDATE_PROTO_FILES=${BUILD_opencv_dnn}
-        ###### PYLINT/FLAKE8
-        -DENABLE_PYLINT=OFF
-        -DENABLE_FLAKE8=OFF
-        # CMAKE
-        -DCMAKE_DISABLE_FIND_PACKAGE_Git=ON
-        -DCMAKE_DISABLE_FIND_PACKAGE_JNI=ON
-        # ENABLE
-        -DENABLE_CXX11=ON
-        ###### OPENCV vars
-        "-DOPENCV_DOWNLOAD_PATH=${DOWNLOADS}/opencv-cache"
-        ${BUILD_WITH_CONTRIB_FLAG}
-        -DOPENCV_OTHER_INSTALL_PATH=share/opencv
-        ###### customized properties
-        ## Options from vcpkg_check_features()
-        ${FEATURE_OPTIONS}
-        -DCMAKE_DISABLE_FIND_PACKAGE_Halide=ON
-        -DHALIDE_ROOT_DIR=${CURRENT_INSTALLED_DIR}
-        -DWITH_GTK=OFF
-        -DWITH_IPP=${WITH_IPP}
-        -DWITH_MATLAB=OFF
-        -DWITH_MSMF=${WITH_MSMF}
-        -DWITH_OPENMP=${WITH_OPENMP}
-        -DWITH_PROTOBUF=${BUILD_opencv_dnn}
-        -DWITH_OPENCLAMDBLAS=OFF
-        -DWITH_TBB=${WITH_TBB}
-        -DWITH_OPENJPEG=OFF
-        ###### BUILD_options (mainly modules which require additional libraries)
-        -DBUILD_opencv_ovis=${BUILD_opencv_ovis}
-        -DBUILD_opencv_sfm=${BUILD_opencv_sfm}
-        -DBUILD_opencv_xfeatures2d=${BUILD_opencv_xfeatures2d}
-        -DBUILD_opencv_dnn=${BUILD_opencv_dnn}
-        ###### The following modules are disabled for UWP
-        -DBUILD_opencv_quality=${BUILD_opencv_quality}
-        -DBUILD_opencv_gapi=${BUILD_opencv_gapi}
-        ###### The following module is disabled because it's broken #https://github.com/opencv/opencv_contrib/issues/2307
-        -DBUILD_opencv_rgbd=OFF
-        ###### Additional build flags
-        ${ADDITIONAL_BUILD_FLAGS}
+        -DCONTRIB_SOURCE_PATH=${CONTRIB_SOURCE_PATH}
 )
 
 vcpkg_cmake_install()
-vcpkg_cmake_config_fixup(CONFIG_PATH "share/opencv" TARGET_PATH "share/opencv")
+vcpkg_cmake_config_fixup(PACKAGE_NAME opencv CONFIG_PATH "share/opencv")
 vcpkg_copy_pdbs()
 
 if(VCPKG_LIBRARY_LINKAGE STREQUAL "static")
-  file(READ ${CURRENT_PACKAGES_DIR}/share/opencv/OpenCVModules.cmake OPENCV_MODULES)
+  file(READ "${CURRENT_PACKAGES_DIR}/share/opencv/OpenCVModules.cmake" OPENCV_MODULES)
   set(DEPS_STRING "include(CMakeFindDependencyMacro)
-find_dependency(protobuf CONFIG)
+find_dependency(Protobuf CONFIG)
 if(protobuf_FOUND)
   if(TARGET protobuf::libprotobuf)
     add_library (libprotobuf INTERFACE IMPORTED)
@@ -502,20 +282,20 @@ find_dependency(Qt5 COMPONENTS OpenGL Concurrent Test)")
                    "OgreGLSupport" OPENCV_MODULES "${OPENCV_MODULES}")
   endif()
 
-  file(WRITE ${CURRENT_PACKAGES_DIR}/share/opencv/OpenCVModules.cmake "${OPENCV_MODULES}")
+  file(WRITE "${CURRENT_PACKAGES_DIR}/share/opencv/OpenCVModules.cmake" "${OPENCV_MODULES}")
 
 
-  file(REMOVE_RECURSE ${CURRENT_PACKAGES_DIR}/bin ${CURRENT_PACKAGES_DIR}/debug/bin)
+  file(REMOVE_RECURSE "${CURRENT_PACKAGES_DIR}/bin" "${CURRENT_PACKAGES_DIR}/debug/bin")
 endif()
 
-file(REMOVE_RECURSE ${CURRENT_PACKAGES_DIR}/debug/share)
-file(REMOVE_RECURSE ${CURRENT_PACKAGES_DIR}/debug/include)
-file(REMOVE ${CURRENT_PACKAGES_DIR}/LICENSE)
-file(REMOVE ${CURRENT_PACKAGES_DIR}/debug/LICENSE)
+file(REMOVE_RECURSE "${CURRENT_PACKAGES_DIR}/debug/share")
+file(REMOVE_RECURSE "${CURRENT_PACKAGES_DIR}/debug/include")
+file(REMOVE "${CURRENT_PACKAGES_DIR}/LICENSE")
+file(REMOVE "${CURRENT_PACKAGES_DIR}/debug/LICENSE")
 
 if(VCPKG_TARGET_IS_ANDROID)
-  file(REMOVE_RECURSE ${CURRENT_PACKAGES_DIR}/README.android)
-  file(REMOVE_RECURSE ${CURRENT_PACKAGES_DIR}/debug/README.android)
+  file(REMOVE_RECURSE "${CURRENT_PACKAGES_DIR}/README.android")
+  file(REMOVE_RECURSE "${CURRENT_PACKAGES_DIR}/debug/README.android")
 endif()
 
-file(INSTALL ${SOURCE_PATH}/LICENSE DESTINATION ${CURRENT_PACKAGES_DIR}/share/${PORT} RENAME copyright)
+file(INSTALL "${SOURCE_PATH}/LICENSE" DESTINATION "${CURRENT_PACKAGES_DIR}/share/${PORT}" RENAME copyright)
