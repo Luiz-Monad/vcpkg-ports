@@ -4,7 +4,7 @@ cmake_minimum_required(VERSION 3.11)
 cmake_policy(VERSION 3.11)
 
 set(LZMA_VER "19.00")
-project(LZMA VERSION ${LZMA_VER} LANGUAGES C CXX)
+project(Lzma7Zip VERSION ${LZMA_VER} LANGUAGES C CXX)
 
 set(SRC_C
     C/LzmaDec.c
@@ -27,7 +27,7 @@ add_library(
 set_target_properties(
     LZMA
     PROPERTIES
-    OUTPUT_NAME lzma
+    OUTPUT_NAME ${PROJECT_NAME}
     DEBUG_POSTFIX d
     VERSION ${LZMA_VER}
     SOVERSION 1.0)
@@ -81,29 +81,29 @@ install(
 
 install(
     EXPORT LZMA
-    DESTINATION share/LZMA
-    FILE LZMATargets.cmake
-    NAMESPACE LZMA::
+    DESTINATION share/lzma7z
+    FILE ${PROJECT_NAME}Targets.cmake
+    NAMESPACE Lzma7Zip::
 )
 
 include(CMakePackageConfigHelpers)
 
 write_basic_package_version_file(
-    ${CMAKE_CURRENT_BINARY_DIR}/LZMAConfigVersion.cmake
+    ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake
     COMPATIBILITY AnyNewerVersion
 )
 install(
-    FILES ${CMAKE_CURRENT_BINARY_DIR}/LZMAConfigVersion.cmake
-    DESTINATION share/LZMA
+    FILES ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake
+    DESTINATION share/lzma7z
 )
 
 configure_package_config_file(
-    ${CMAKE_CURRENT_SOURCE_DIR}/LZMAConfig.cmake.in
-    ${CMAKE_CURRENT_BINARY_DIR}/LZMAConfig.cmake
-    INSTALL_DESTINATION share/LZMA
+    ${CMAKE_CURRENT_SOURCE_DIR}/${PROJECT_NAME}Config.cmake.in
+    ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake
+    INSTALL_DESTINATION share/lzma7z
 )
 
 install(
-    FILES ${CMAKE_CURRENT_BINARY_DIR}/LZMAConfig.cmake
-    DESTINATION share/LZMA
+    FILES ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake
+    DESTINATION share/lzma7z
 )
