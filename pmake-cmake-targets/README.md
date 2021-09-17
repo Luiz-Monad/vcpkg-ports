@@ -2,7 +2,7 @@
 
 `pmake-cmake-targets` provides helpers to simplify targets declaration on CMake.
 
-Merge release and debug CMake targets and configs to support multiconfig generators.
+Generate CMake targets, configure installation and export in the *golden* standard way.
 
 Principle of operation:
 

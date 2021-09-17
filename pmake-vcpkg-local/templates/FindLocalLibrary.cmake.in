@@ -1,0 +1,48 @@
+function(_find_local_@_LTGT@)
+
+  set(_MERGED ${CMAKE_CURRENT_BINARY_DIR}/local_@_LTGT@)
+  # Merge targets
+  foreach(VCPKG_TARGET_TRIPLET_CONF debug release)
+    set(_tri ${VCPKG_TARGET_TRIPLET}-${VCPKG_TARGET_TRIPLET_CONF})
+    set(_dir $ENV{P_project_output}/@_PRJ_DIR@/${_tri})
+
+    # Symbolic link binaries and configs
+    foreach(_subdir "bin" "lib" "sdk/native/staticlibs" "share/@_LTGT@")
+      file(GLOB _files "${_dir}/${_subdir}/*")
+      execute_process(
+        COMMAND ${CMAKE_COMMAND} 
+          -E make_directory "${_MERGED}/${_subdir}")
+      foreach(_file IN LISTS _files)
+        get_filename_component(_name "${_file}" NAME)
+        execute_process(
+          COMMAND ${CMAKE_COMMAND} 
+            -E create_symlink ${_file} "${_MERGED}/${_subdir}/${_name}")
+      endforeach()
+    endforeach()
+
+    # Symbolic link header directory
+    if (VCPKG_TARGET_TRIPLET_CONF STREQUAL release)
+      execute_process(
+        COMMAND ${CMAKE_COMMAND} 
+          -E create_symlink "${_dir}/include" "${_MERGED}/include")
+    endif()
+    
+  endforeach()
+
+  # CMake find it
+  set(@_TGT@_DIR ${_MERGED}/share/@_LTGT@)
+  set(@_TGT@_MAP_IMPORTED_CONFIG "RELWITHDEBINFO=release;MINSIZEREL=release")
+  _find_package(@_TGT@ CONFIG REQUIRED)
+
+  # Create our virtual target if needed
+  if(@_TGT@_FOUND AND NOT TARGET @_TGT@::@_LTGT@)
+      add_library(@_TGT@::@_LTGT@ INTERFACE IMPORTED)
+      target_link_libraries(@_TGT@::@_LTGT@ INTERFACE "${@_TGT@_LIBS}")
+  endif()
+
+  set(@_TGT@_DIR "${@_TGT@_DIR}" PARENT_SCOPE)
+  set(@_TGT@_FOUND "${@_TGT@_FOUND}" PARENT_SCOPE)
+  set(@_TGT@_VERSION "${@_TGT@_VERSION}" PARENT_SCOPE)
+
+endfunction()
+_find_local_@_LTGT@()
