@@ -1,8 +1,8 @@
 {
   "name": "oboe",
-  "version-string": "0.9.3",
-  "homepage": "https://readthedocs.org/projects/deepspeech/",
-  "description": "Mozzila's deepspeech",
+  "version-string": "1.6.2",
+  "homepage": "https://github.com/google/oboe",
+  "description": "Oboe is a C++ library which makes it easy to build high-performance audio apps on Android",
   "dependencies": [
     {
       "name": "vcpkg-cmake",

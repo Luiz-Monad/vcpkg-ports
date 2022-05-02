@@ -1,7 +1,7 @@
 
 vcpkg_from_github(
     OUT_SOURCE_PATH SOURCE_PATH
-    REPO luiz-monad/oboe
+    REPO luiz-monad/tensortflow-meta
     REF customport
     SHA512 @SHA512@
 )
