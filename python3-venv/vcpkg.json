@@ -1,0 +1,8 @@
+{
+  "name": "python3-venv",
+  "version-semver": "3.10.0",
+  "description": "The Python programming language",
+  "homepage": "https://github.com/python/cpython",
+  "dependencies": [],
+  "features": {}
+}
