@@ -1,0 +1,21 @@
+{
+  "name": "oboe",
+  "version-string": "0.9.3",
+  "homepage": "https://readthedocs.org/projects/deepspeech/",
+  "description": "Mozzila's deepspeech",
+  "dependencies": [
+    {
+      "name": "vcpkg-cmake",
+      "host": true
+    },
+    {
+      "name": "vcpkg-cmake-config",
+      "host": true
+    },
+    "pmake-cmake-targets",
+    "pmake-cmake-dashboard",
+    "zlib"
+  ],
+  "default-features": [],
+  "features": []
+}

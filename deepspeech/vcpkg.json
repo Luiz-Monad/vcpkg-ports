@@ -1,0 +1,22 @@
+{
+  "name": "deepspeech",
+  "version-string": "0.9.3",
+  "homepage": "https://readthedocs.org/projects/deepspeech/",
+  "description": "Mozzilla's deepspeech",
+  "dependencies": [
+    {
+      "name": "vcpkg-cmake",
+      "host": true
+    },
+    {
+      "name": "vcpkg-cmake-config",
+      "host": true
+    },
+    "pmake-cmake-targets",
+    "pmake-cmake-dashboard",
+    "tensorflow-cc",
+    "zlib"
+  ],
+  "default-features": [],
+  "features": []
+}
