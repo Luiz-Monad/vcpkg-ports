@@ -13,7 +13,7 @@ function(pmake_generate_local_finder)
 
   configure_file(
       ${CMAKE_CURRENT_FUNCTION_LIST_DIR}/templates/FindLocalLibrary.cmake.in
-      ${CURRENT_PACKAGES_DIR}/share/FindLocal${_TGT}.cmake @ONLY
+      ${CURRENT_PACKAGES_DIR}/share/Find${_TGT}.cmake @ONLY
   )
 
   configure_file(

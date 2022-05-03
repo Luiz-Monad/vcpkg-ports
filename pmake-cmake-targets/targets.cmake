@@ -1,6 +1,24 @@
 
 # ----------------------------------------------------------------------------
 
+function(pmake_target_export _arg_TGT)
+  set(__args PUB_INC LIB)
+  cmake_parse_arguments("_arg" "" "" "${__args}" ${ARGN})
+
+  # Consts.
+  string(TOLOWER ${_arg_TGT} __name)
+  set_target_properties(${_arg_TGT} PROPERTIES EXPORT_NAME ${__name})
+
+  # Deploy the binaries to project targets.
+  install(
+    TARGETS ${_arg_TGT}
+    EXPORT ${PROJECT_NAME}-targets
+  )
+
+endfunction()
+
+# ----------------------------------------------------------------------------
+
 function(pmake_target_install _arg_TGT)
   set(__args PUB_INC LIB)
   cmake_parse_arguments("_arg" "" "" "${__args}" ${ARGN})
