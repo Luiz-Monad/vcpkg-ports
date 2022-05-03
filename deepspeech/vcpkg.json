@@ -14,9 +14,6 @@
     },
     "pmake-cmake-targets",
     "pmake-cmake-dashboard",
-    "tensorflow-cc",
-    "zlib"
-  ],
-  "default-features": [],
-  "features": []
+    "tensorflow"
+  ]
 }

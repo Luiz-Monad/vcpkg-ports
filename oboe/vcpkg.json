@@ -13,9 +13,6 @@
       "host": true
     },
     "pmake-cmake-targets",
-    "pmake-cmake-dashboard",
-    "zlib"
-  ],
-  "default-features": [],
-  "features": []
+    "pmake-cmake-dashboard"
+  ]
 }

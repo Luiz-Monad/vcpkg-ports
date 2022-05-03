@@ -16,7 +16,5 @@
     "pmake-cmake-dashboard",
     "opencv4",
     "zlib"
-  ],
-  "default-features": [],
-  "features": []
+  ]
 }
